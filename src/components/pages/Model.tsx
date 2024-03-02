@@ -8,22 +8,19 @@ type ObjType = {
 
 export const Model = () => {
     const {modelName, modelId} = useParams()
-    const id = Number(modelId)
     const obj: ObjType = {'adidas': adidasArr, 'puma': pumaArr}
-    const sneakers = modelName && obj[modelName].find(model => model.id === id)
-    if (!sneakers) {
-        return (
-            <div style={{display: 'flex', justifyContent: 'center', fontWeight: 'bold', fontSize: '40px'}}>
-                {'Модель отсутствует'}
-            </div>
-        )
-    }
+    const currentModel = modelName && modelName in obj && obj[modelName].find(el => el.id === Number(modelId))
     return (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '40px'}}>
-            <div>{sneakers.model}</div>
-            <div>{sneakers.collection}</div>
-            <div>{sneakers.price}</div>
-            <div><img src={sneakers.picture} alt={sneakers.model} width={400}/></div>
+        <div style={{textAlign: 'center'}}>
+            {!currentModel
+                ? <h2>Модель отсутствует</h2>
+                : <>
+                    <h2>{currentModel.model}</h2>
+                    <h4>{currentModel.collection}</h4>
+                    <h3>{currentModel.price}</h3>
+                    <img src={currentModel.picture} alt={currentModel.model} style={{width: '400px'}}/>
+                </>
+            }
         </div>
     )
 }
